@@ -174,9 +174,12 @@
   box-sizing: border-box; }
 
 .dropzone {
-  min-height: 250px;
+  min-height: 350px;
   border: 2px solid rgba(0, 0, 0, 0.3);
-  background: white;
+  background-image: url("dragdrop.png");
+  background-size: 700px 350px;
+  background-position: center;
+  background-repeat: no-repeat;
   padding: 20px 20px;
 }
 .dropzone.dz-clickable {
