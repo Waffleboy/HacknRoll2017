@@ -43,7 +43,7 @@ def generate_csv(label_dic):
     df.to_csv("labels.csv",index=False)
 
 check_and_create_save_folder(SAVE_TO_FOLDER)
-
+counter = 0
 label_dic = {}
 for root, dirs, files in os.walk(ROOT_FOLDER, topdown=False):
     for folder in dirs:
@@ -54,5 +54,8 @@ for root, dirs, files in os.walk(ROOT_FOLDER, topdown=False):
             picture = preprocessor.read_image(picture_link)
             label_dic[pic_name] = folder
             save_to_folder(picture,pic_name)
+            counter += 1
+            if counter % 2000 == 0:
+                print("Transferred {} images".format(counter))
             
 generate_csv(label_dic)

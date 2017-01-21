@@ -13,7 +13,7 @@ import os,glob
 
 BASE_FOLDER = "raw_images"
 SAVE_TO_FOLDER = "processed_pictures"
-DIMENSIONS = (160,160)
+DIMENSIONS = (120,120)
 
 def run():
     global BASE_FOLDER

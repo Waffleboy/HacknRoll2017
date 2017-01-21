@@ -11,7 +11,7 @@ import tensorflow as tf
 tf.python.control_flow_ops = tf
 #==============================================================================
 
-
+from keras.models import load_model
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
@@ -38,10 +38,10 @@ def get_pic_name(picture_link):
 label_dic = load_label_dic("labels.csv")
 TRAINING_DIRECTORY = "train"
 batch_size = 20
-nb_classes = len(label_dic["label"].unique())
-nb_epoch = 50
+nb_classes = len(np.unique(np.array(list(label_dic.values()))))
+nb_epoch = 25
 useValidation = True
-SIZE = (160,160)
+SIZE = (120,120)
 
 #==============================================================================
 #                                Load Images
@@ -81,42 +81,79 @@ img_rows, img_cols = SIZE[0],SIZE[1]
 def custom_model(img_channels,img_rows,img_cols):    
     model = Sequential()
     # 1st layer
-    model.add(Convolution2D(32, 3, 3, border_mode='same',init='glorot_normal',
-                            input_shape=(img_channels, img_rows, img_cols)))
+    model.add(Convolution2D(32, 3, 3, input_shape=(3, SIZE[0],SIZE[1])))
     model.add(Activation('relu'))
-    # second layer
-    model.add(Convolution2D(32, 3, 3,init='glorot_normal'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    
+    model.add(Convolution2D(32, 3, 3))
     model.add(Activation('relu'))
-    model.add(ZeroPadding2D())
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.20))
-    # 3rd layer
-    model.add(Convolution2D(64, 3, 3, border_mode='same',init='glorot_normal'))
-    model.add(PReLU())
-    model.add(Convolution2D(64, 3, 3,init='glorot_normal',))
-    model.add(PReLU())
+    
+    model.add(Convolution2D(64, 3, 3))
+    model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.20))
-    #4th layer
-    model.add(Convolution2D(64, 3, 3,init='glorot_normal'))
-    model.add(PReLU())
-    model.add(Convolution2D(64, 3, 3,init='glorot_normal'))
-    model.add(PReLU())
-    model.add(ZeroPadding2D())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    # 5th layer
-    model.add(Convolution2D(32, 3, 3,init='glorot_normal'))
-    model.add(PReLU())
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-    model.add(Dropout(0.2))
-    # 5th and 6th normal layer
-    model.add(Flatten())
-    model.add(Dense(1024))
-    model.add(PReLU())
-    model.add(Dense(1024))
-    model.add(Dropout(0.3))
+    
+    #last
+    model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+    model.add(Dense(512))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(512))
+    model.add(Activation('sigmoid'))
     model.add(Dense(nb_classes))
     model.add(Activation('softmax'))
+    return model
+
+
+def VGG_16(weights_path=None):
+    global SIZE
+    model = Sequential()
+    model.add(ZeroPadding2D((1,1),input_shape=(3,SIZE[0],SIZE[1])))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(128, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(128, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(256, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+#    model.add(ZeroPadding2D((1,1)))
+#    model.add(Convolution2D(512, 3, 3, activation='relu'))
+#    model.add(ZeroPadding2D((1,1)))
+#    model.add(Convolution2D(512, 3, 3, activation='relu'))
+#    model.add(ZeroPadding2D((1,1)))
+#    model.add(Convolution2D(512, 3, 3, activation='relu'))
+#    model.add(MaxPooling2D((2,2), strides=(2,2)))
+
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(ZeroPadding2D((1,1)))
+    model.add(Convolution2D(512, 3, 3, activation='relu'))
+    model.add(MaxPooling2D((2,2), strides=(2,2)))
+    model.add(Flatten())
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(1024, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(nb_classes))
+    model.add(Activation('softmax'))
+
+    if weights_path:
+        model.load_weights(weights_path)
+
     return model
     
 #==============================================================================
@@ -145,17 +182,10 @@ print(X_train.shape[0], 'train samples')
 print(X_test.shape[0], 'test samples')
 
 # convert class vectors to binary class matrices
+y_train = np.array(list(map(lambda x:int(x),y_train)))
+y_test = np.array(list(map(lambda x:int(x),y_test)))
 Y_train = np_utils.to_categorical(y_train, nb_classes)
 Y_test = np_utils.to_categorical(y_test, nb_classes)
-
-model = custom_model(img_channels,img_rows,img_cols)
-
-earlyStopping = EarlyStopping(monitor= 'val_loss',patience = 5,verbose = 0,mode='auto')
-
-sgd = SGD(lr=0.02, decay=1e-6, momentum=0.9, nesterov=True)
-model.compile(loss='categorical_crossentropy',
-              optimizer=sgd,
-              metrics=['accuracy'])
 
 # Cause idk why must reshape
 X_train = X_train.reshape((-1,img_channels,SIZE[0],SIZE[1]))
@@ -168,67 +198,85 @@ X_train /= 255
 X_test /= 255
 
 if useValidation:
+    y_val = np.array(list(map(lambda x:int(x),y_val)))
     Y_val =  np_utils.to_categorical(y_val, nb_classes)
     X_val = X_val.reshape((-1,img_channels,SIZE[0],SIZE[1]))
     X_val = X_val.astype('float32')
     X_val /= 255
     
 
-data_augmentation = False #does fancy processing stuff!
-if not data_augmentation:
-    print('Not using data augmentation.')
-    if useValidation:
-        model.fit(X_train, Y_train,
-                  batch_size=batch_size,
-                  nb_epoch=nb_epoch,
-                  validation_data=(X_val, Y_val),
-                  shuffle=True,
-                  callbacks = [earlyStopping])
-    else:
-        model.fit(X_train, Y_train,
-                  batch_size=batch_size,
-                  nb_epoch=nb_epoch,
-                  validation_data=(X_test, Y_test),
-                  shuffle=True,
-                  callbacks = [earlyStopping])
-else:
-    print('Using real-time data augmentation.')
+model = custom_model(img_channels,img_rows,img_cols)
+#model = VGG_16()
+earlyStopping = EarlyStopping(monitor= 'val_loss',patience = 5,verbose = 0,mode='auto')
+sgd = SGD(lr=0.02, decay=1e-6, momentum=0.9, nesterov=True)
+model.compile(loss='categorical_crossentropy',
+              optimizer=sgd,
+              metrics=['accuracy'])
 
-    # this will do preprocessing and realtime data augmentation
-    datagen = ImageDataGenerator(
-        featurewise_center=False,  # set input mean to 0 over the dataset
-        samplewise_center=False,  # set each sample mean to 0
-        featurewise_std_normalization=False,  # divide inputs by std of the dataset
-        samplewise_std_normalization=False,  # divide each input by its std
-        zca_whitening=False,  # apply ZCA whitening
-        rotation_range=5,  # randomly rotate images in the range (degrees, 0 to 180)
-        width_shift_range=0,  # randomly shift images horizontally (fraction of total width)
-        height_shift_range=0,  # randomly shift images vertically (fraction of total height)
-        horizontal_flip=False,  # randomly flip images
-        vertical_flip=False)  # randomly flip images
-
-    # compute quantities required for featurewise normalization
-    # (std, mean, and principal components if ZCA whitening is applied)
-    datagen.fit(X_train)
-    if useValidation:
-        model.fit_generator(datagen.flow(X_train, Y_train,
-                        batch_size=batch_size),
-                        samples_per_epoch=X_train.shape[0],
-                        nb_epoch=nb_epoch,
-                        validation_data=(X_val, Y_val),
-                        callbacks = [earlyStopping])
+def train_model(model):
+    data_augmentation = False #does fancy processing stuff!
+    if not data_augmentation:
+        print('Not using data augmentation.')
+        if useValidation:
+            model.fit(X_train, Y_train,
+                      batch_size=batch_size,
+                      nb_epoch=nb_epoch,
+                      validation_data=(X_val, Y_val),
+                      shuffle=True,
+                      callbacks = [earlyStopping])
+        else:
+            model.fit(X_train, Y_train,
+                      batch_size=batch_size,
+                      nb_epoch=nb_epoch,
+                      validation_data=(X_test, Y_test),
+                      shuffle=True,
+                      callbacks = [earlyStopping])
     else:
-    # fit the model on the batches generated by datagen.flow()
-        model.fit_generator(datagen.flow(X_train, Y_train,
+        print('Using real-time data augmentation.')
+    
+        # this will do preprocessing and realtime data augmentation
+        datagen = ImageDataGenerator(
+            featurewise_center=False,  # set input mean to 0 over the dataset
+            samplewise_center=False,  # set each sample mean to 0
+            featurewise_std_normalization=False,  # divide inputs by std of the dataset
+            samplewise_std_normalization=False,  # divide each input by its std
+            zca_whitening=False,  # apply ZCA whitening
+            rotation_range=5,  # randomly rotate images in the range (degrees, 0 to 180)
+            width_shift_range=0,  # randomly shift images horizontally (fraction of total width)
+            height_shift_range=0,  # randomly shift images vertically (fraction of total height)
+            horizontal_flip=False,  # randomly flip images
+            vertical_flip=False)  # randomly flip images
+    
+        # compute quantities required for featurewise normalization
+        # (std, mean, and principal components if ZCA whitening is applied)
+        datagen.fit(X_train)
+        if useValidation:
+            model.fit_generator(datagen.flow(X_train, Y_train,
                             batch_size=batch_size),
                             samples_per_epoch=X_train.shape[0],
                             nb_epoch=nb_epoch,
-                            validation_data=(X_test, Y_test),
+                            validation_data=(X_val, Y_val),
                             callbacks = [earlyStopping])
-
+        else:
+        # fit the model on the batches generated by datagen.flow()
+            model.fit_generator(datagen.flow(X_train, Y_train,
+                                batch_size=batch_size),
+                                samples_per_epoch=X_train.shape[0],
+                                nb_epoch=nb_epoch,
+                                validation_data=(X_test, Y_test),
+                                callbacks = [earlyStopping])
+    return model
+    
+model = train_model(model)
+    
 ## FOR TEST IMGS.
 if useValidation:
     from sklearn import metrics
     testpred = model.predict_classes(X_test)
     Y_test = Y_test.argmax(1)
     print('Test accuracy is :'+str(metrics.accuracy_score(Y_test,testpred)))
+
+def save_model(model,name):
+    model.save('{}.h5'.format(name))  # creates a HDF5 file 
+
+#save_model(model,"56accuracy")
