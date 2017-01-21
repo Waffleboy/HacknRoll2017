@@ -73,7 +73,7 @@ bot.on('message', function (message) {
       }, function (err, res, body) {
         console.log(body);
         const duration = body['Average Duration'];
-        const disease = body['Disease'];
+        const disease = body['Disease'].replace(/%20/g, ' ');
         const symptoms = body['Symptoms'];
         return sendMessage({senderId, message: `Disease identified to be ${disease}`}).then(() => {
             return sendMessage({senderId, message: `Symptoms: ${symptoms}`}).then(() => {
