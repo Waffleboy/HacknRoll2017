@@ -21,6 +21,7 @@ from keras.optimizers import SGD
 from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import np_utils
 from keras.callbacks import EarlyStopping
+from sklearn.externals import joblib
 import cv2
 import pandas as pd
 import glob
@@ -278,5 +279,9 @@ if useValidation:
 
 def save_model(model,name):
     model.save('{}.h5'.format(name))  # creates a HDF5 file 
+    
+def save_mapping(label_mapper_dic):
+    joblib.dump(label_mapper_dic,"label_mapping.pkl")
 
 #save_model(model,"56accuracy")
+#save_mapping(label_mapper_dic)
