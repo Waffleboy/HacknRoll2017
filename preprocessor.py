@@ -39,12 +39,15 @@ def process_all_images(BASE_FOLDER):
     
 def process(image_link,save_to_folder):
     global DIMENSIONS
-    picname_without_extension = get_picname_without_extension(image_link)
-    img = read_image(image_link)
-    img = resize_image(img,DIMENSIONS)
-    flip_image_all_directions(img,picname_without_extension,save_to_folder)
-    rotate_image_all_directions(img,picname_without_extension,save_to_folder)
-    save_image(save_to_folder,img,get_pic_name(image_link))
+    try:
+        picname_without_extension = get_picname_without_extension(image_link)
+        img = read_image(image_link)
+        img = resize_image(img,DIMENSIONS)
+        flip_image_all_directions(img,picname_without_extension,save_to_folder)
+        rotate_image_all_directions(img,picname_without_extension,save_to_folder)
+        save_image(save_to_folder,img,get_pic_name(image_link))
+    except:
+        print("Error in file {}".format(image_link))
 
 def get_pic_name(picture_link):
     return picture_link[picture_link.rfind('/')+1:]
@@ -94,4 +97,6 @@ def rotate_image_all_directions(img,picname_without_extension,save_to_folder):
         degree += 90
         save_image(save_to_folder,entry,picname_without_extension+'rotated{}.jpg'.format(degree))
     
+if __name__ == '__main__':
+    run()
 
