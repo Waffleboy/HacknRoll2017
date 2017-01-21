@@ -5,6 +5,7 @@ Created on Sat Jan 21 18:57:50 2017
 
 @author: waffleboy
 """
+
 #==============================================================================
 #                       Temp bug fix
 import tensorflow as tf
@@ -27,6 +28,8 @@ import pandas as pd
 import glob
 import random
 import numpy as np
+
+random.seed(4)
 
 def load_label_dic(csv_file):
     df = pd.read_csv(csv_file)
@@ -284,5 +287,27 @@ def save_model(model,name):
 def save_mapping(label_mapper_dic):
     joblib.dump(label_mapper_dic,"label_mapping.pkl")
 
-#save_model(model,"44accuracy")
-#save_mapping(label_mapper_dic)
+save_model(model,"57accuracy")
+save_mapping(label_mapper_dic)
+
+#
+#X_train = trainImgs
+#y_train = labels
+#
+#y_train = np.array(list(map(lambda x:int(x),y_train)))
+#Y_train = np_utils.to_categorical(y_train, nb_classes)
+#
+## Cause idk why must reshape
+#X_train = X_train.reshape((-1,img_channels,SIZE[0],SIZE[1]))
+#
+## convert to float and normalize. just do it.
+#X_train = X_train.astype('float32')
+#X_train /= 255
+#lst = []
+#
+#for i in range(len(X_train)):
+#    c = model.predict_classes(X_train[i].reshape(-1,3,120,120))
+#    c = c[0]
+#    if int(labels[i]) == c:
+#        lst.append(i)
+#lst2 = [picnames[x] for x in lst]

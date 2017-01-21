@@ -20,7 +20,7 @@ def check_or_make_folder(foldername):
 check_or_make_folder(UPLOAD_FOLDER)
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-model = load_model('56accuracy.h5')
+model = load_model('57accuracy.h5')
 mapper = joblib.load('label_mapping.pkl')
 mapper = {v:k for k,v in mapper.items()}
 
