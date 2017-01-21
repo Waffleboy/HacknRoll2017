@@ -65,13 +65,14 @@ for file in files:
     pic = cv2.imread(file)
     picname = get_pic_name(file)
     label = label_dic[picname]
-    images_and_labels.append([pic,label])
+    images_and_labels.append([pic,label,picname])
     
 random.shuffle(images_and_labels)
 
 trainImgs = np.array([x[0] for x in images_and_labels])
 labels = np.array([x[1] for x in images_and_labels])
 labels, label_mapper_dic = change_labels_to_numeric(labels)
+picnames = np.array([x[2] for x in images_and_labels])
 #==============================================================================
 #                                   Models
 #==============================================================================
@@ -283,5 +284,5 @@ def save_model(model,name):
 def save_mapping(label_mapper_dic):
     joblib.dump(label_mapper_dic,"label_mapping.pkl")
 
-#save_model(model,"56accuracy")
+#save_model(model,"44accuracy")
 #save_mapping(label_mapper_dic)
