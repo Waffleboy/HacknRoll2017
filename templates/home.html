@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="static/assets/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="static/assets/css/buttons.css">
         <link rel="stylesheet" href="static/assets/css/style.css">
+        <link rel="stylesheet" href="static/assets/css/dropzone.css">
         <link rel="stylesheet" href="static/assets/css/media-queries.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -39,9 +40,19 @@
             <div class="inner-bg">
                 <div class="container">
                     <div class="row">
-                    	<div class="col-sm-5 phone">
-                        	<img src="static/assets/img/iphone-1.png" alt="">
-                        </div>
+                      <div id="dropzone">
+                        <form action="upload" class="dropzone" id="demo-upload">
+                            <div class="dz-message">Drop files here or click to upload.
+                                <br> <span class="note">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
+
+                            </div>
+                        </form>
+                      </div>
+                    	<!-- <div class="col-sm-5 phone">
+                        <form action="upload" class="dropzone"></form>
+
+                        <img src="static/assets/img/iphone-1.png" alt="">
+                      </div> -->
                         <div class="col-sm-7 text">
                             <h1>Teris App is now ready. <br>Go get it!</h1>
                             <div class="description">
@@ -265,6 +276,7 @@
         <script src="static/assets/js/jquery-1.10.2.min.js"></script>
         <script src="static/assets/js/jquery.backstretch.min.js"></script>
         <script src="static/assets/js/retina-1.1.0.min.js"></script>
+        <script src="static/assets/js/dropzone.js"></script>
         <script>
           jQuery(document).ready(function() {
               /* Fullscreen background */
