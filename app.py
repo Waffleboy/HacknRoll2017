@@ -35,7 +35,7 @@ def upload_file():
             pic = preprocess_single_image(filename)
             pred_class = model.predict_classes(pic)[0]
             pred_class_name = get_pred_class_name(pred_class)
-            pred_class_extra_details = get_pred_class_extra_details(pred_class_name)
+            pred_class_extra_details_dic = get_pred_class_extra_details(pred_class_name)
             
             return ''
     return "upload rejected"
@@ -48,7 +48,7 @@ def visualize():
 def pred_class_extra_details(pred_class_name):
     df = load_and_format_extra_details_csv()
     df = df[df["Disease"] == pred_class_name]
-    return df.to_json(orient='records')
+    return df.to_dict()
     
 def get_pred_class_name(pred_class_number):
     global mapper
