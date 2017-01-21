@@ -39,8 +39,9 @@ def upload_file():
             pred_class = model.predict_classes(pic)[0]
             pred_class_name = get_pred_class_name(pred_class)
             pred_class_extra_details_dic = get_pred_class_extra_details(pred_class_name)
-            
+            display_results(pred_class_extra_details_dic)
             return ''
+            
     return "upload rejected"
 
 
@@ -61,7 +62,10 @@ def messenger(path):
 def visualize():
 	return "Coming soon!"
 
-
+def display_results(dic):
+    return render_template('display.html',dic=dic)
+    
+    
 def get_pred_class_extra_details(pred_class_name):
     df = load_and_format_extra_details_csv()
     df = df[df["Disease"] == pred_class_name]
