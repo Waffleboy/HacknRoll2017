@@ -51,8 +51,10 @@ def upload_file():
     return "upload rejected"
 
 
-@app.route('/api/<path:path>')
+@app.route('/api/<path:path>', methods=['GET', 'POST'])
 def messenger(path):
+    path = request.headers["Auth-Token"]
+    print(path)
     folder_name = "messengerpics"
     check_or_make_folder(folder_name)
     wgetter.download(path,outdir=folder_name)
