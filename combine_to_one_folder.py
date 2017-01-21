@@ -14,7 +14,7 @@ import preprocessor
 import glob
 import cv2
 
-ROOT_FOLDER = "pictures" #where the original training images are
+ROOT_FOLDER = "processed_images" #where the original training images are
 SAVE_TO_FOLDER = "train" #where the new images will be
 
 def check_and_create_save_folder(SAVE_TO_FOLDER):

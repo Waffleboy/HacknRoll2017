@@ -11,8 +11,9 @@ Description: This file processes the raw images. It resizes, flips, rotates.
 import cv2
 import os,glob
 
-BASE_FOLDER = "pictures"
+BASE_FOLDER = "raw_images"
 SAVE_TO_FOLDER = "processed_pictures"
+DIMENSIONS = (160,160)
 
 def run():
     global BASE_FOLDER
@@ -37,9 +38,10 @@ def process_all_images(BASE_FOLDER):
     
     
 def process(image_link,save_to_folder):
+    global DIMENSIONS
     picname_without_extension = get_picname_without_extension(image_link)
     img = read_image(image_link)
-    img = resize_image(img)
+    img = resize_image(img,DIMENSIONS)
     flip_image_all_directions(img,picname_without_extension,save_to_folder)
     rotate_image_all_directions(img,picname_without_extension,save_to_folder)
     save_image(save_to_folder,img,get_pic_name(image_link))
@@ -68,13 +70,13 @@ def flip_image_all_directions(img,picname_without_extension,save_to_folder):
     hori_flip_img=cv2.flip(img,1)
     verti_flip_img=cv2.flip(img,0)
     hori_verti_flip_img = hori_flip_img.copy()
-    hori_verti_flip_img = cv2.flip(hori_verti_flip_img,1) 
+    hori_verti_flip_img = cv2.flip(verti_flip_img,1) 
     save_image(save_to_folder,hori_flip_img,picname_without_extension +'_horizontal.jpg')
     save_image(save_to_folder,verti_flip_img,picname_without_extension + '_vertical.jpg')
     save_image(save_to_folder,hori_verti_flip_img,picname_without_extension + '_horivertical.jpg')
     
     
-def rotate_image_all_directions(folder,img,picname_without_extension,save_to_folder):
+def rotate_image_all_directions(img,picname_without_extension,save_to_folder):
     lst = []
     for i in range(3):
         lst.append(img.copy())
