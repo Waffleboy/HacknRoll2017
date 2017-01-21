@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Teris - Responsive App Landing Page</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic">
+        <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static/assets/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="static/assets/css/buttons.css">
+        <link rel="stylesheet" href="static/assets/css/style.css">
+        <link rel="stylesheet" href="static/assets/css/dropzone.css">
+        <link rel="stylesheet" href="static/assets/css/media-queries.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="static/assets/ico/favicon.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="static/assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="static/assets/ico/apple-touch-icon-57-precomposed.png">
+
+    </head>
+    <style>
+    .background {
+        background-image: url("static/assets/img/backgrounds/1.jpg"); 
+    }
+    </style>
+    <body>
+    <div class="single-feature-container single-feature-bg background">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 single-feature-text">
+                        <h2>Your Diagnosis</h2>
+                        <div class = "col-lg-6 col-xs-12">
+                            <h3> {{dic["Disease"]}} </h3>
+                            <img src = "static/exampleimages/Acne.jpg">
+                        </div>
+                        <div class = "col-lg-6 col-xs-12">
+                            <h3> Symptoms </h3>
+                            <p>{{dic["Symptoms"]}}</p>
+                            <h3> Average duration </h3>
+                            <p> {{ dic["Average Duration"]}} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="footer-social">
+                            <a class="social social-facebook" href=""><i class="fa fa-facebook"></i></a>
+                            <a class="social social-twitter" href=""><i class="fa fa-twitter"></i></a>
+                            <a class="social social-pinterest" href=""><i class="fa fa-pinterest"></i></a>
+                        </div>
+                        <div class="footer-copyright">
+                            &copy; Skinalytics<a href="http://azmind.com"></a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+        <!-- Javascript -->
+        <script src="static/assets/js/jquery-1.10.2.min.js"></script>
+        <script src="static/assets/js/jquery.backstretch.min.js"></script>
+        <script src="static/assets/js/retina-1.1.0.min.js"></script>
+
+    </body>
+
+</html>

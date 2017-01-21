@@ -66,9 +66,12 @@ def messenger(path):
     pred_class_extra_details_dic["class"] = pred_class_name
     return jsonify(pred_class_extra_details_dic)
 
-@app.route("/visualize")
-def visualize():
-	return "Coming soon!"
+@app.route("/display")
+def test():
+    dic = {'Average Duration': '5 years',
+ 'Disease': 'Acne',
+ 'Symptoms': 'papules: small red, raised bumps caused by infected hair follicles\r\npustules: small, red pimples that have pus at their tips\r\nnodules: solid, painful lumps beneath the surface of the skin\r\ncysts: painful, pus-filled infections found beneath the skin'}
+    return render_template('display.html',dic=dic)
 
 def display_results(dic):
     return render_template('display.html',dic=dic)
