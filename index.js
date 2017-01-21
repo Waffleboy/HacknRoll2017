@@ -60,7 +60,34 @@ bot.on('message', function (message) {
     const image = images[0];  // TODO: handle case in which user sends multiple images at one go
     console.log(image);
     const message = 'Analysing...';
-    sendMessage({senderId, message});
+    return sendMessage({senderId, message}).then(() => {
+      var headers = {
+        'User-Agent':       'Super Agent/0.0.1',
+        'Content-Type':     'application/x-www-form-urlencoded'
+      }
+      var options = {
+        url: 'someurl',
+        method: 'POST',
+        headers: headers,
+        form: {image}
+      }
+
+      // Start the request
+      request(options, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          // Print out the response body
+          console.log(body)
+          const duration = body['Average Duration'];
+          const disease = body['Disease'];
+          const symptoms = body['Symptoms'];
+          return sendMessage({senderId, message: `Disease identified to be ${disease}`}).then(() => {
+            return sendMessage({senderId, message: `Symptoms: ${symptoms}`}).then(() => {
+              return sendMessage({senderId, message: `Average duration of symptoms is ${duration}`});
+            })
+          })
+        }
+      })
+    });
   }
 });
 
