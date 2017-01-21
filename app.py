@@ -13,6 +13,11 @@ from flask import jsonify
 UPLOAD_FOLDER = 'uploads/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
+def check_or_make_folder(foldername):
+    if not os.path.exists(foldername):
+        os.mkdir(foldername)
+
+check_or_make_folder(UPLOAD_FOLDER)
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 model = load_model('56accuracy.h5')
@@ -33,9 +38,10 @@ def upload_file():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
             
-            pic = preprocess_single_image(filename)
+            pic = preprocess_single_image(filepath)
             pred_class = model.predict_classes(pic)[0]
             pred_class_name = get_pred_class_name(pred_class)
             pred_class_extra_details_dic = get_pred_class_extra_details(pred_class_name)
@@ -88,10 +94,6 @@ def preprocess_single_image(filepath):
     pic = pic.reshape(-1,3,120,120)
     return pic
     
-def check_or_make_folder(foldername):
-    if not os.path.exists(foldername):
-        os.mkdir(foldername)
-
 if __name__ == "__main__":
     server = WSGIServer(("",5000), app)
     print('Server is up')
