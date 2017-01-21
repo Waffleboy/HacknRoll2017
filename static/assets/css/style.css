@@ -47,7 +47,7 @@ img { max-width: 100%; }
 }
 
 .top-content .text {
-	padding-top: 100px;
+	padding-top: 20px;
 }
 
 .top-content .description {
@@ -211,4 +211,3 @@ footer {
 	border-bottom: 1px dashed #eee;
 }
 .footer-copyright a:hover { border: 0; }
-
