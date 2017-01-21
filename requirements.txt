@@ -1,0 +1,11 @@
+Flask == 0.11.1
+Keras == 1.2.1
+numpy == 1.12.0
+pandas == 0.19.1
+tensorflow_gpu == 0.12.1
+Werkzeug == 0.11.3
+wgetter == 0.6
+cv2 == 1.0
+gevent == 1.2.1
+scikit_learn == 0.18.1
+tensorflow == 0.12.1
