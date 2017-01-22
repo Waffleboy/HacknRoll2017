@@ -178,7 +178,7 @@
   border: 2px solid rgba(0, 0, 0, 0.3);
   background-image: url("dragdrop.png");
   background-size: 700px 350px;
-  background-position: center;
+  background-position: left;
   background-repeat: no-repeat;
   padding: 20px 20px;
 }

@@ -22,6 +22,7 @@ h1, h2 {
 	font-size: 42px;
   font-family: 'Open Sans', sans-serif;
     font-weight: 700;
+    color: black;
     line-height: 54px;
 }
 
@@ -52,9 +53,10 @@ img { max-width: 100%; }
 }
 
 .top-content .description {
-	margin: 40px 0 10px 0;
+	margin: 26px 0 43px 0;
     font-size: 22px;
     font-family: 'Lato', sans-serif;
+    color: black;
     line-height: 36px;
 }
 
