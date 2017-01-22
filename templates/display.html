@@ -10,6 +10,8 @@
 
         <!-- CSS -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Open+Sans">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic">
         <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="static/assets/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="static/assets/css/buttons.css">
@@ -34,7 +36,34 @@
     </head>
     <style>
     .background {
-        background-image: url("static/assets/img/backgrounds/2.png"); 
+        background-image: url("static/assets/img/backgrounds/2.png");
+        background-size: cover; 
+    }
+    .single-feature-text h3 {
+        font-family: 'Lato', sans-serif;
+        color: black;
+        text-align: left;
+        text-decoration: underline;
+    }
+    .single-feature-text p {
+        font-family: 'Lato', sans-serif;
+        color: black;
+        padding:0px;
+        padding-right: 60px;
+        text-align: left;
+    }
+    .single-feature-text img{
+        padding-right: 30px;
+    }
+    #diagnosis{
+        text-align: center;
+        text-decoration: none;
+        font-style: italic;
+    }
+    #potato{
+        text-decoration: none;
+        font-style: italic;
+
     }
     </style>
     <body>
@@ -44,7 +73,7 @@
                     <div class="col-sm-12 single-feature-text">
                         <h2>Your Diagnosis</h2>
                         <div class = "col-lg-6 col-xs-12">
-                            <h3> {{dic["Disease"]}} </h3>
+                            <h3 id = "diagnosis"> {{dic["Disease"]}} </h3>
                             <img src = 'static/exampleimages/{{dic["Disease"]}}.jpg'>
                         </div>
                         <div class = "col-lg-6 col-xs-12">
@@ -52,6 +81,7 @@
                             <p>{{dic["Symptoms"]}}</p>
                             <h3> Average duration </h3>
                             <p> {{ dic["Average Duration"]}} </p>
+                            <h3 id = "potato"> A doctor's visit is highly recommended. </h3>
                         </div>
                     </div>
                 </div>
