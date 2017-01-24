@@ -20,12 +20,15 @@ To host the repository and run it on your local computer:
 
 ### Models & Retraining
 1. Create a folder called raw_images, and create a new subfolder for every disease you wish to train on. Populate these folders with many training images of the disease.
-[!Folder example](http://imgur.com/a/K3r6v)
+
+[!Folder example](http://imgur.com/F6QYvHv)
 
 Preprocessor.py resizes the training images to specified dimensions, and generates flipped and rotated images to increase the number of training images.
+
 2. run ```python preprocessor.py``` to resize and preprocess these images.
 
 combine_to_one_folder.py creates a folder called train, and copies all the pictured created by preprocessor.py to the train folder. It creates a labels.csv that maps images to their labels.
+
 3. run ```python combine_to_one_folder.py``` 
 
 4. Modify the settings in classifier.py if needed, set the 'save_model_to' variable to save the model in run(), then run ```python classifier.py```
