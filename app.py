@@ -49,7 +49,7 @@ def upload_file():
             pred_class_extra_details_dic = get_pred_class_extra_details(pred_class_name)
             pred_class_extra_details_dic["Disease"] = pred_class_extra_details_dic["Disease"].replace("%20"," ")
             print("Predicted class is {}".format(pred_class_name))
-            joblib.dump(pred_class_extra_details_dic,'diseaseinfo.pkl') #super hacky
+            joblib.dump(pred_class_extra_details_dic,'diseaseinfo_for_messenger.pkl') #super hacky
             return render_template('display.html',dic=pred_class_extra_details_dic)
             # display_results(pred_class_extra_details_dic)
             #return ''
