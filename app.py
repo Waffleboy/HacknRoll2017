@@ -10,7 +10,7 @@ from keras.models import load_model
 from sklearn.externals import joblib
 from flask import jsonify
 
-UPLOAD_FOLDER = 'uploads/'
+UPLOAD_FOLDER = 'user_uploads/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 def check_or_make_folder(foldername):
@@ -20,9 +20,11 @@ def check_or_make_folder(foldername):
 check_or_make_folder(UPLOAD_FOLDER)
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-model = load_model('demo_model.h5')
-mapper = joblib.load('label_mapping.pkl')
+model = load_model('saved_models/demo_model.h5') #Change to model being used
+mapper = joblib.load('saved_models/demo_label_mapping.pkl')
 mapper = {v:k for k,v in mapper.items()}
+
+EXTRA_DETAILS_LOCATION = "disease_extra_details.csv"
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -90,7 +92,8 @@ def get_pred_class_name(pred_class_number):
     return mapper[pred_class_number]
     
 def load_and_format_extra_details_csv():
-    df = pd.read_csv("SkinData.csv")
+    global EXTRA_DETAILS_LOCATION
+    df = pd.read_csv(EXTRA_DETAILS_LOCATION)
     df["Disease"] = [x.replace(' ','%20') for x in df["Disease"]]
     return df
 
