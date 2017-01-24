@@ -21,7 +21,7 @@ To host the repository and run it on your local computer:
 ### Models & Retraining
 1. Create a folder called raw_images, and create a new subfolder for every disease you wish to train on. Populate these folders with many training images of the disease. For example:
 
-[!Example of folder setup](http://i.imgur.com/F6QYvHv.png)
+![Example of folder setup](http://i.imgur.com/F6QYvHv.png)
 
 Preprocessor.py resizes the training images to specified dimensions, and generates flipped and rotated images to increase the number of training images.
 
