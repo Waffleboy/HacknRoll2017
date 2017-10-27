@@ -20,8 +20,8 @@ def check_or_make_folder(foldername):
 check_or_make_folder(UPLOAD_FOLDER)
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-model = load_model('saved_models/demo_model.h5') #Change to model being used
-mapper = joblib.load('saved_models/demo_label_mapping.pkl')
+model = load_model('saved_models/current_model.h5') #Change to model being used
+mapper = joblib.load('saved_models/current_model_mapping.pkl')
 mapper = {v:k for k,v in mapper.items()}
 
 EXTRA_DETAILS_LOCATION = "disease_extra_details.csv"
@@ -50,6 +50,8 @@ def upload_file():
             pred_class_extra_details_dic["Disease"] = pred_class_extra_details_dic["Disease"].replace("%20"," ")
             print("Predicted class is {}".format(pred_class_name))
             joblib.dump(pred_class_extra_details_dic,'diseaseinfo_for_messenger.pkl') #super hacky
+            joblib.dump(pred_class_extra_details_dic,'diseaseinfo.pkl') #super hacy
+            print(pred_class_extra_details_dic)
             return render_template('display.html',dic=pred_class_extra_details_dic)
             # display_results(pred_class_extra_details_dic)
             #return ''
@@ -77,9 +79,9 @@ def test():
     dic = joblib.load("diseaseinfo.pkl")
     return render_template('display.html',dic=dic)
 
-@app.route("/display2")
-def display_results(dic):
-    return render_template('display.html',dic=dic)
+# @app.route("/display2")
+# def display_results(dic):
+#     return render_template('display.html',dic=dic)
     
     
 def get_pred_class_extra_details(pred_class_name):
@@ -102,7 +104,7 @@ def preprocess_single_image(filepath):
     pic = cv2.resize(pic, (120,120))
     pic = pic.astype('float32')
     pic /= 255
-    pic = pic.reshape(-1,3,120,120)
+    pic = pic.reshape(-1,120,120,3)
     return pic
     
 if __name__ == "__main__":

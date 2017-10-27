@@ -314,7 +314,7 @@ def find_test_accuracy(model,X_test,Y_test,class_names):
     return testpred
     
 def save_model(model,name):
-    model.save('{}.h5'.format(name))  # creates a HDF5 file 
+    model.save('saved_models/{}.h5'.format(name))  # creates a HDF5 file 
 
 # Keras does not use categorical targets. save the mapping from categorical to numerical
 def save_mapping(label_mapper_dic,save_model_to):
@@ -324,7 +324,7 @@ def save_model_if_specified(model,model_name,label_mapper_dic):
     if model_name:
         print("Saving model to {}".format('saved_models/'+model_name))
         save_model(model,model_name)
-        save_mapping(label_mapper_dic)
+        save_mapping(label_mapper_dic,model_name)
     return
 
 #==============================================================================
