@@ -37,13 +37,31 @@ Modify the settings in classifier.py if needed. You can set your own model archi
 This should train your model, and save it with the name given if specified.
 
 ## Facebook Messenger Bot
-###How to run
-Run `npm install`
+### Setup 
+1. Run `npm install`
+2. Create a .env file with contents
+```
+PAGE_ACCESS_TOKEN=... (get from Facebook app dashboard)
+VERIFICATION_TOKEN=... (set arbitrarily)
+```
+3. Download [ngrok](https://ngrok.com/download)
 
-Create a .env file with PAGE_ACCESS_TOKEN (get from Facebook app dashboard) and VERIFICATION_TOKEN (set arbitrarily)
-Download ngrok exe
+### Run
+1. Run `node index.js`
+2. Run `./ngrok http 3000`
+3. Copy paste the output https url (`https://...ngrok.io`+`/facebook`) from ngrok into the Facebook app dashboard. Set the `Verify Token` field to `VERIFICATION_TOKEN` (as set in part 2 of Setup above).
 
-Run `node index.js`
-Run `./ngrok http 3000`
-Copy paste the https url into Facebook app dashboard Webhooks
-Set Verify Token field to VERIFICATION_TOKEN
+![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/webhooks.png "Webhook Page")
+
+![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/editSubscription.png "Edit subscription")
+
+4. If the bot still remains unresponsive to messages (does not receive POST requests from Facebook), it might be due to the bot webhook not being subscribed properly to the Skinalytics Facebook page events.
+
+Choose the page to subscribe to:
+
+![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/choosePage.png "Choose page")
+
+Select the `Unsubscribe` button, then click the `Subscribe` button to resubscribe the webhook:
+
+![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/subscribePage.png "Subscribe page")
+
