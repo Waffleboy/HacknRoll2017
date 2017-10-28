@@ -51,17 +51,17 @@ VERIFICATION_TOKEN=... (set arbitrarily)
 2. Run `./ngrok http 3000`
 3. Copy paste the output https url (`https://...ngrok.io`+`/facebook`) from ngrok into the Facebook app dashboard. Set the `Verify Token` field to `VERIFICATION_TOKEN` (as set in part 2 of Setup above).
 
-![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/webhooks.png "Webhook Page")
+![alt text](https://github.com/Waffleboy/HacknRoll2017/raw/master/instruction-images/webhooks.png "Webhook Page")
 
-![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/editSubscription.png "Edit subscription")
+![alt text](https://github.com/Waffleboy/HacknRoll2017/raw/master/instruction-images/editSubscription.png "Edit subscription")
 
 4. If the bot still remains unresponsive to messages (does not receive POST requests from Facebook), it might be due to the bot webhook not being subscribed properly to the Skinalytics Facebook page events.
 
 Choose the page to subscribe to:
 
-![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/choosePage.png "Choose page")
+![alt text](https://github.com/Waffleboy/HacknRoll2017/raw/master/instruction-images/choosePage.png "Choose page")
 
 Select the `Unsubscribe` button, then click the `Subscribe` button to resubscribe the webhook:
 
-![alt text](https://github.com/Waffleboy/HacknRoll2017/tree/master/instruction-images/subscribePage.png "Subscribe page")
+![alt text](https://github.com/Waffleboy/HacknRoll2017/raw/master/instruction-images/subscribePage.png "Subscribe page")
 
