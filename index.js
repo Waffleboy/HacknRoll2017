@@ -58,12 +58,13 @@ bot.on('message', function (message) {
 
   if (images) {
     const image = images[0];  // TODO: handle case in which user sends multiple images at one go
+    console.log("The image is");
     console.log(image);
     const message = 'Analysing...';
     return sendMessage({senderId, message}).then(() => {
         request({
-            url: 'https://40fbbaa9.ngrok.io/api/'+image,
-            qs: {},
+            url: 'https://a6e0e197.ngrok.io/api/'+image,
+            qs: {"image":image},
           method: 'GET',
           headers: {
               'Content-Type': 'application/json',
@@ -71,6 +72,7 @@ bot.on('message', function (message) {
           },
           json: {}
       }, function (err, res, body) {
+        console.log("The body is");
         console.log(body);
         const duration = body['Average Duration'];
         const disease = body['Disease'].replace(/%20/g, ' ');

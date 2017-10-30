@@ -36,23 +36,26 @@ def main():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(filepath)
-            
-            pic = preprocess_single_image(filepath)
-            pred_class = model.predict_classes(pic)[0]
-            pred_class_name = get_pred_class_name(pred_class)
-            pred_class_extra_details_dic = get_pred_class_extra_details(pred_class_name)
-            pred_class_extra_details_dic["Disease"] = pred_class_extra_details_dic["Disease"].replace("%20"," ")
-            print("Predicted class is {}".format(pred_class_name))
-            joblib.dump(pred_class_extra_details_dic,'diseaseinfo_for_messenger.pkl') #super hacky
-            joblib.dump(pred_class_extra_details_dic,'diseaseinfo.pkl') #super hacy
-            print(pred_class_extra_details_dic)
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+        
+        pic = preprocess_single_image(filepath)
+        pred_class = model.predict_classes(pic)[0]
+        pred_class_name = get_pred_class_name(pred_class)
+        pred_class_extra_details_dic = get_pred_class_extra_details(pred_class_name)
+        pred_class_extra_details_dic["Disease"] = pred_class_extra_details_dic["Disease"].replace("%20"," ")
+        print("Predicted class is {}".format(pred_class_name))
+        joblib.dump(pred_class_extra_details_dic,'diseaseinfo_for_messenger.pkl') #super hacky
+        joblib.dump(pred_class_extra_details_dic,'diseaseinfo.pkl') #super hacy
+        print(pred_class_extra_details_dic)
+        if request.method == 'POST':
             return render_template('display.html',dic=pred_class_extra_details_dic)
+
+        #hack for twitter
+        return jsonify(pred_class_extra_details_dic)
             # display_results(pred_class_extra_details_dic)
             #return ''
             
@@ -61,11 +64,14 @@ def upload_file():
 
 @app.route('/api/<path:path>', methods=['GET', 'POST'])
 def messenger(path):
-    path = request.headers["Auth-Token"]
-    print(path)
+    #path2 = request.headers["Auth_Token"]
+    ## Holy shit this is the hackiest thing ive done so far
+    url = request.url
+    image_url = url[url.find("api/")+4:]
+    # end hacky.
     folder_name = "messengerpics"
     check_or_make_folder(folder_name)
-    wgetter.download(path,outdir=folder_name)
+    wgetter.download(image_url,outdir=folder_name)
     file = glob.glob(folder_name+'/' + '*.jpg')[0]
     pic = preprocess_single_image(file)
     pred_class = model.predict_classes(pic)[0]
