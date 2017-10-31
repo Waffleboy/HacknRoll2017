@@ -13,6 +13,7 @@ import os
 import shutil
 import numpy as np
 import seaborn as sns
+import cv2
 
 img_width, img_height = 120, 120
 train_data_dir = "pictures/train"
@@ -63,11 +64,10 @@ def _create_dir_if_not_exists(data_dir, class_folder):
     return fullpath
 
 def init_datagen(n_train, n_val, n_test):
-    train_datagen, val_datagen, test_datagen = _create_idg(True), _create_idg(), _create_idg()
+    train_datagen, val_datagen = _create_idg(True), _create_idg()
     train_generator = train_datagen.flow_from_directory(train_data_dir, target_size=(img_height, img_width), batch_size=batch_size, class_mode='categorical')
     val_generator = val_datagen.flow_from_directory(validation_data_dir, target_size=(img_height, img_width), batch_size=batch_size, class_mode='categorical')
-    test_generator = test_datagen.flow_from_directory(test_data_dir, target_size=(img_height, img_width), batch_size=batch_size, class_mode='categorical')
-    return (train_generator, val_generator, test_generator)
+    return (train_generator, val_generator)
 
 def train_model(train_generator, val_generator):
     model = _init_model()
@@ -102,10 +102,23 @@ def _create_idg(train=False):
                              rotation_range=30,
                              shuffle=train)
 
-def evaluate_model(model, test_generator):
-    nsteps = test_generator.n // batch_size
-    y_pred = model.predict_generator(test_generator, steps=nsteps)
-    y_true = test_generator.classes[:batch_size*nsteps]
+def create_test():
+    cnt = 0
+    X, y = [], []
+    for classname in os.listdir(test_data_dir):
+        if classname != '.DS_Store':
+            cnt += 1
+            currpath = os.path.join(test_data_dir, classname)
+            for img in os.listdir(currpath):
+                imagepath = os.path.join(currpath, img)
+                x = cv2.imread(imagepath)
+                X.append(x)
+                y.append(cnt)
+    return np.array(X), np.array(y)
+
+def evaluate_model(model, X_train, y_true):
+    y_pred = model.predict(X_train)
+    assert len(y_pred) == len(y_true)
     acc = accuracy_score(y_true, y_pred)
     print("Test Accuracy: {:.4f}".format(acc))
     cm = confusion_matrix(y_true, y_pred)
@@ -137,6 +150,7 @@ def _create_cm(cm, classes, save_dest=None):
 
 if __name__=="__main__":
     n_train, n_val, n_test = split_dataset(clean=False)
-    train_generator, val_generator, test_generator = init_datagen(n_train, n_val, n_test)
+    train_generator, val_generator = init_datagen(n_train, n_val, n_test)
     fitted_model = train_model(train_generator, val_generator)
-    evaluate_model(fitted_model, test_generator)
+    X_train, y_true = create_test()
+    evaluate_model(fitted_model, X_train, y_true)
