@@ -13,6 +13,7 @@ from sklearn.preprocessing import normalize
 import itertools
 import os
 import shutil
+import numpy as np
 import seaborn as sns
 
 img_width, img_height = 120, 120
@@ -65,7 +66,7 @@ def _create_dir_if_not_exists(data_dir, class_folder):
     return fullpath
 
 def init_datagen(n_train, n_val, n_test):
-    train_datagen, val_datagen, test_datagen = _create_idg(), _create_idg(), _create_idg()
+    train_datagen, val_datagen, test_datagen = _create_idg(True), _create_idg(), _create_idg()
     train_generator = train_datagen.flow_from_directory(train_data_dir, target_size=(img_height, img_width), batch_size=batch_size, class_mode='categorical')
     val_generator = val_datagen.flow_from_directory(validation_data_dir, target_size=(img_height, img_width), batch_size=batch_size, class_mode='categorical')
     test_generator = test_datagen.flow_from_directory(test_data_dir, target_size=(img_height, img_width), batch_size=batch_size, class_mode='categorical')
@@ -95,18 +96,21 @@ def _init_model():
     model_final.compile(loss='categorical_crossentropy', optimizer=optimizers.SGD(lr=0.0001, momentum=0.9), metrics=['accuracy'])
     return model_final
 
-def _create_idg():
-    return ImageDataGenerator(rescale = 1./255,
-                             horizontal_flip=True,
+def _create_idg(train=False):
+    return ImageDataGenerator(horizontal_flip=True,
                              fill_mode='nearest',
                              zoom_range=0.3,
                              width_shift_range=0.3,
                              height_shift_range=0.3,
-                             rotation_range=30)
+                             rotation_range=30,
+                             shuffle=train)
 
 def evaluate_model(model, test_generator):
-    y_pred = model.predict_generator(test_generator,steps=56)
-    y_true = test_generator.classes
+    nsteps = test_generator.n // batch_size
+    y_pred = model.predict_generator(test_generator, steps=nsteps)
+    y_true = test_generator.classes[:batch_size*nsteps]
+    y_true = y_true[:len(y_pred)]
+    y_pred = np.argmax(y_pred,axis=1)
     acc = accuracy_score(y_true, y_pred)
     print("Test Accuracy: {:.4f}".format(acc))
     cm = confusion_matrix(y_true, y_pred)
