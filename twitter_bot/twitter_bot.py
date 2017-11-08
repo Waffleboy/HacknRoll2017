@@ -39,23 +39,25 @@ class CustomStreamListener(tweepy.StreamListener):
                     wgetter.download(media,outdir=TWITTER_PIC_DIRECTORY)
                 writer.writerow([status.author.screen_name, status.created_at, status.text,geo,lat,long,media])
                 print("Downloaded! Running classifier..")
+            else:
+                return True
                 #ci.imageClassify("TerrorAttachment")
         last_image = get_last_image(TWITTER_PIC_DIRECTORY)
         print("Picture URL is",last_image)
         with open(last_image, 'rb') as f: 
             r = requests.get("http://127.0.0.1:5000/upload", files={"file": f})
             response = r.json()
+            f.close()
 
         name = status.user.screen_name
         tweet_id = status.id_str
         disease = response["Disease"]
-        symptoms = response["Symptoms"]
-        if len(symptoms) > 100:
-            symptoms = symptoms.split(',')[0].replace('\r','').replace('\n','')
-        api.update_status("Hey @{}, Its likely {} with symptoms {}".format(name,disease,symptoms),tweet_id) 
+        est_time = response["Average Duration"]
+        symptoms = response["Symptoms"].replace('\r','').replace('\n',' ')
+        return_reply = "Hey @{}, Its likely {}, lasting {}, with symptoms {}".format(name,disease,est_time,symptoms)
+        return_reply = return_reply[:140] #140 char
+        api.update_status(return_reply,tweet_id) 
         print("Done!")
-
-            f.close()
             
     def on_error(self, status_code):
         print ( sys.stderr, 'Encountered error with status code:', status_code)

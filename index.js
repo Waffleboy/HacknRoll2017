@@ -63,7 +63,7 @@ bot.on('message', function (message) {
     const message = 'Analysing...';
     return sendMessage({senderId, message}).then(() => {
         request({
-            url: 'https://a6e0e197.ngrok.io/api/'+image,
+            url: 'https://15fa823c.ngrok.io/api/'+image,
             qs: {"image":image},
           method: 'GET',
           headers: {
