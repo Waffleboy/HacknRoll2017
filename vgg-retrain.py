@@ -23,7 +23,7 @@ validation_data_dir = "pictures/val"
 test_data_dir = "pictures/test"
 PIC_FOLDER = "pictures/processed_pictures"
 batch_size = 16
-epochs = 30
+epochs = 10
 
 def split_dataset(clean=True):
     if clean:
@@ -102,8 +102,7 @@ def _create_idg(train=False):
                              zoom_range=0.3,
                              width_shift_range=0.3,
                              height_shift_range=0.3,
-                             rotation_range=30,
-                             shuffle=train)
+                             rotation_range=30)
 
 
 def create_test():
