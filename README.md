@@ -3,9 +3,9 @@
 ![Skinalytics poster](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/461/185/datas/gallery.jpg)
 
 ## What is Skinalytics?
-Skinalytics is a *Snap N Diagnose* solution that can identify over 30 common skin diseases (including STDs) through the use of deep learning. It can be accessed from both a Web Application and via Facebook Messenger.
+Skinalytics is a *Snap N Diagnose* solution that can identify over 8 common skin diseases (including STDs) through the use of deep learning. It can be accessed from both a Web Application, Twitter and via Facebook Messenger.
 
-This prototype, inclusive of scraping the training data, was made within 24 hours for HackNRoll 2017, an annual hackathon organized by NUS Hackers. Our initial deep learning model achieved an accuracy of ~60%. This accuracy can definitely be improved by adding more training images, and tuning the model architecture.
+This prototype, inclusive of scraping the training data, was made within 24 hours for HackNRoll 2017, an annual hackathon organized by NUS Hackers. Our initial deep learning model achieved an accuracy of ~76%. This accuracy can definitely be improved by adding more training images, and tuning the model architecture.
 
 We hope to continously improve this model, and have a solution which can rival the accuracy of a doctor's diagnosis, bringing healthcare to people who cannot afford specialist care, or whom do not visit the doctor for reasons such as embarassment, downplaying the severity of their symptoms, etc.
 
