@@ -22,7 +22,7 @@ class CustomStreamListener(tweepy.StreamListener):
             if TWITTER_ACCOUNT in status.text.lower():#hack to filter
                 writer = csv.writer(f)
                 try:
-                    lat=status.coordinates['coordinates'][1] #FIXME: 1, 0
+                    lat=status.coordinates['coordinates'][1]
                     long=status.coordinates['coordinates'][0]
                 except:
                     lat=''
